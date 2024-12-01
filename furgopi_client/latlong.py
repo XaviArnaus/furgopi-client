@@ -4,7 +4,7 @@ from .sensors.pa1010d import PA1010D
 
 class Latlong:
 
-    def run():
+    def run(self):
         gps = PA1010D()
 
         while True:
