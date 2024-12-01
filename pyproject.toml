@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "furgopi-client"
+version = "0.1.0"
+description = "Python based controller for the RPi used in the Furgo"
+authors = ["Xavier <xavi@arnaus.net>"]
+readme = "README.md"
+packages = [{include = "furgopi_client"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyxavi = "^0.8.0"
+
+[tool.poetry.scripts]
+main = "runner:run"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
