@@ -233,6 +233,18 @@ test = ["blurhash (>=1.1.4)", "cryptography (>=1.6.0)", "http-ece (>=1.0.5)", "p
 webpush = ["cryptography (>=1.6.0)", "http-ece (>=1.0.5)"]
 
 [[package]]
+name = "pynmea2"
+version = "1.19.0"
+description = "Python library for the NMEA 0183 protcol"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pynmea2-1.19.0-py3-none-any.whl", hash = "sha256:5138558b4fb5daa587b2c17de99eb43df0297039de1c98010c996624abfb00eb"},
+    {file = "pynmea2-1.19.0.tar.gz", hash = "sha256:1daa79b93279f887d1c235e5cc5c79e32644564138ce46989ab0f4a2fc970d7c"},
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
@@ -420,6 +432,21 @@ files = [
 ]
 
 [[package]]
+name = "smbus3"
+version = "0.5.5"
+description = "smbus3 is a drop-in replacement for smbus2, smbus-cffi, smbus-python written in pure Python, intended for use with Python 3.8+ on Unix-like systems"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "smbus3-0.5.5-py3-none-any.whl", hash = "sha256:7f4cc169975543e67e4b7404168ce918e656f6f8daca5de2bd30527298058083"},
+    {file = "smbus3-0.5.5.tar.gz", hash = "sha256:91eed38fb6b7d2f893fbfc3f37006aa41e6913fdda5b3a9a79238b353760f92e"},
+]
+
+[package.extras]
+docs = ["sphinx (>=7.0.0)"]
+
+[[package]]
 name = "soupsieve"
 version = "2.6"
 description = "A modern CSS selector implementation for Beautiful Soup."
@@ -487,4 +514,4 @@ tooling-extras = ["pyaml (>=23.7.0)", "pypandoc-binary (>=1.11)", "pytest (>=7.4
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d550ae5a4dabccc2bc9ebfa646352b3b130600617e42e99421802976e7f84748"
+content-hash = "7e64a4106f7ef794dba008353933e4b98c04f5b38cc24404e51c2472d9fad651"

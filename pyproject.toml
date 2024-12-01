@@ -9,6 +9,8 @@ packages = [{include = "furgopi_client"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 pyxavi = "^0.8.0"
+pynmea2 = "1.19.0"
+smbus3 = "0.5.5"
 
 [tool.poetry.scripts]
 main = "runner:run"
