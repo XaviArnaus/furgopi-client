@@ -1,4 +1,6 @@
 import time
+import sys
+import os
 
 from pyxavi.terminal_color import TerminalColor
 from pyxavi.debugger import full_stack
@@ -14,10 +16,17 @@ runners = {
 }
 
 def loop():
-    print('[press ctrl+c to end the script]')
-    while True:
-        run()
-        time.sleep(LOOP_SLEEP)
+    try:
+        print('[press ctrl+c to end the script]')
+        while True:
+            run()
+            time.sleep(LOOP_SLEEP)
+    except KeyboardInterrupt:
+        print('good bye')
+        try:
+            sys.exit(130)
+        except SystemExit:
+            os._exit(130)
 
 def run():
     try:
