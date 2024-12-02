@@ -1,15 +1,18 @@
 import time
 import sys
 import os
+import json
 
 from pyxavi.terminal_color import TerminalColor
 from pyxavi.debugger import full_stack, dd
+from pyxavi.config import Config
 
 from furgopi_client.entities.base_entity import BaseEntity
 from furgopi_client.temperature_runner import TemperatureRunner
 from furgopi_client.gps_runner import GpsRunner
 
 LOOP_SLEEP = 1.0
+CONFIG_FILENAME = "main.yaml"
 
 runners = {
     "gps": GpsRunner(),
@@ -47,11 +50,16 @@ def run():
             else:
                 print(f"No datapoint from the {name} module")
 
-        dd(result)
+        _store_data(result)
+        print(TerminalColor.GREEN_BRIGHT + "Done." + TerminalColor.END)
     except RuntimeError as e:
         print(TerminalColor.RED_BRIGHT + str(e) + TerminalColor.END)
     except Exception:
         print(full_stack())
+
+def _store_data(datapoints: dict):
+    with open(Config(CONFIG_FILENAME).get("datapoints.file"), "a") as file:
+        file.write(json.dumps(datapoints))
 
 def _get_data() -> dict:
     output = {}
