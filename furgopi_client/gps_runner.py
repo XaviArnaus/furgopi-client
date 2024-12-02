@@ -15,10 +15,10 @@ class GpsRunner:
         if result:
             data = self.gps.data
             today = datetime.now(tz=timezone.utc)
-            faking_datetime = f"{today.year}-{today.month}-{today.day} {data.timestamp}"
+            faking_datetime = f"{today.year}-{today.month}-{today.day} {data['timestamp']}"
             data = {
-                **{"timestamp": datetime.strptime(faking_datetime, "%Y-%m-%d %H:%M:%s%:z")},
-                **data
+		**data,
+                **{"timestamp": datetime.strptime(faking_datetime, "%Y-%m-%d %H:%M:%S%z").astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")}
             }
             return GpsEntity.from_dict(data)
         else:

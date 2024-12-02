@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .entities.temp_entity import TempEntity
 from .sensors.ds18b20 import DS18B20
@@ -18,7 +18,7 @@ class TemperatureRunner:
 		result = []
 		for idx in range(0, count):
 			result.append(TempEntity(
-				timestamp=datetime.utcnow(),
+				timestamp=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S"),
 				celsius_value=self.devices.tempC(idx),
 				device_id=names[idx] if len(names) >= idx+1 else f"UNKNOWN {idx}"
 			))
