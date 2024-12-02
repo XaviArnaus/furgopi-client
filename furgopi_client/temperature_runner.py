@@ -3,8 +3,6 @@ from datetime import datetime
 from .entities.temp_entity import TempEntity
 from .sensors.ds18b20 import DS18B20
 
-from pyxavi.debugger import dd
-
 class TemperatureRunner:
 
 	devices = None

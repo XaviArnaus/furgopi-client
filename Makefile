@@ -12,4 +12,8 @@ update:
 
 .PHONY: run
 run:
-	$(POETRY) run main
+	@$(POETRY) run main
+
+.PHONY: loop
+loop:
+	@$(POETRY) run loop
