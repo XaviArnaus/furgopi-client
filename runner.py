@@ -13,7 +13,7 @@ runners = {
     "temperature": TemperatureRunner()
 }
 
-def loop(self):
+def loop():
     print('[press ctrl+c to end the script]')
     while True:
         run()
