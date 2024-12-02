@@ -3,8 +3,9 @@ import sys
 import os
 
 from pyxavi.terminal_color import TerminalColor
-from pyxavi.debugger import full_stack
+from pyxavi.debugger import full_stack, dd
 
+from furgopi_client.entities.base_entity import BaseEntity
 from furgopi_client.temperature_runner import TemperatureRunner
 from furgopi_client.gps_runner import GpsRunner
 
@@ -30,18 +31,23 @@ def loop():
 
 def run():
     try:
+        result = {}
         datapoints = _get_data()
         for name, datapoint in datapoints.items():
             if datapoint:
                 if isinstance(datapoint, list):
                     for point in datapoint:
-                        print(f"{name}:\n")
-                        print(point.to_string())
+                        id = point.name
+                        data = _prepare_dict_for_json(point)
+                        result[id] = data
                 else:     
-                    print(f"{name}:\n")
-                    print(datapoint.to_string())
+                    id = datapoint.name
+                    data = _prepare_dict_for_json(datapoint)
+                    result[id] = data
             else:
                 print(f"No datapoint from the {name} module")
+
+        dd(result)
     except RuntimeError as e:
         print(TerminalColor.RED_BRIGHT + str(e) + TerminalColor.END)
     except Exception:
@@ -53,3 +59,12 @@ def _get_data() -> dict:
         output[name] = runner.run()
 
     return output
+
+def _prepare_dict_for_json(datapoint: BaseEntity) -> dict:
+    # Convert into a dict
+    data = datapoint.to_dict()
+    # Remove the name from the data
+    del data.name
+
+    return data
+

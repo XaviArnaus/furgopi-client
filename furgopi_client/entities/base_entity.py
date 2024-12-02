@@ -1,10 +1,14 @@
 class BaseEntity:
 
-    def to_string():
+    @property
+    def name(self):
+        raise NotImplementedError("The [name] property is not implemented.")
+
+    def to_string(self):
         raise NotImplementedError("The [to_string] method is not implemented.")
     
     def from_dict():
         raise NotImplementedError("The [from_dict] method is not implemented.")
     
-    def to_dict():
+    def to_dict(self):
         raise NotImplementedError("The [to_dict] method is not implemented.")

@@ -20,6 +20,10 @@ class TempEntity(BaseEntity):
         self.device_id = device_id
 
         super().__init__()
+    
+    @property
+    def name(self):
+        return self.device_id
 
     def to_string(self):
         return f"timestamp: {self.timestamp}\n" +\

@@ -2,6 +2,8 @@ from .base_entity import BaseEntity
 
 class GpsEntity(BaseEntity):
 
+    NAME = "GPS"
+
     timestamp = None,
     latitude = None,
     longitude = None,
@@ -51,6 +53,10 @@ class GpsEntity(BaseEntity):
         self.mode_fix_type = mode_fix_type
 
         super().__init__()
+    
+    @property
+    def name(self):
+        return self.NAME
 
     def to_string(self):
         return f"timestamp: {self.timestamp}\n" +\

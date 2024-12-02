@@ -1,0 +1,8 @@
+###########################
+#     FurgoPi-client      #
+###########################
+
+# Storage for the queue of datapoints to be sent away
+queue:
+  # [String] Where to store it
+  file: "storage/queue.yaml"
