@@ -3,14 +3,14 @@ import time
 from pyxavi.terminal_color import TerminalColor
 from pyxavi.debugger import full_stack
 
-from furgopi_client.temp import Temp
+from furgopi_client.temperature_runner import TemperatureRunner
 from furgopi_client.gps_runner import GpsRunner
 
 LOOP_SLEEP = 1.0
 
 runners = {
     "gps": GpsRunner(),
-    #"temperature": 
+    "temperature": TemperatureRunner()
 }
 
 def loop(self):
@@ -24,8 +24,13 @@ def run():
         datapoints = _get_data()
         for name, datapoint in datapoints.items():
             if datapoint:
-                print(f"{name}:\n")
-                print(datapoint.to_string())
+                if isinstance(datapoint, list):
+                    for point in datapoint:
+                        print(f"{name}:\n")
+                        print(point.to_string())
+                else:     
+                    print(f"{name}:\n")
+                    print(datapoint.to_string())
             else:
                 print(f"No datapoint from the {name} module")
     except RuntimeError as e:
