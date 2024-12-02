@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from .entities.gps_entity import GpsEntity
 from .sensors.pa1010d import PA1010D
 
@@ -11,6 +13,13 @@ class GpsRunner:
     def run(self) -> GpsEntity:
         result = self.gps.update()
         if result:
-            return GpsEntity.from_dict(self.gps.data)
+            data = self.gps.data
+            today = datetime.now(tz=timezone.utc)
+            faking_datetime = f"{today.year}-{today.month}-{today.day} {data.timestamp}"
+            data = {
+                **{"timestamp": datetime.strptime(faking_datetime, "%Y-%m-%d %H:%M:%s%:z")},
+                **data
+            }
+            return GpsEntity.from_dict(data)
         else:
             return None

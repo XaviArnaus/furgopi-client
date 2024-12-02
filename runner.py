@@ -17,7 +17,7 @@ runners = {
 
 def loop():
     try:
-        print('[press ctrl+c to end the script]')
+        print("[press ctrl+c to end the loop]\n")
         while True:
             run()
             time.sleep(LOOP_SLEEP)
