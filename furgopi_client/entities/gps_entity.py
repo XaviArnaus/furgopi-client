@@ -53,17 +53,18 @@ class GpsEntity(BaseEntity):
         super().__init__()
 
     def to_string(self):
-        return f"timestamp: {self.timestamp}/n" +\
-                "latitude: {self.latitude}/n" +\
-                "longitude: {self.longitude}/n" +\
-                "altitude: {self.altitude}/n" +\
-                "num_sats: {self.num_sats}/n" +\
-                "gps_qual: {self.gps_qual}/n" +\
-                "speed_over_ground: {self.speed_over_ground}/n" +\
-                "mode_fix_type: {self.mode_fix_type}/n" +\
-                "pdop: {self.pdop}/n" +\
-                "vdop: {self.vdop}/n" +\
-                "hdop: {self.hdop}"
+        return f"timestamp: {self.timestamp}\n" +\
+                f"latitude: {self.latitude} {self.lat_dir}\n" +\
+                f"longitude: {self.longitude} {self.lon_dir}\n" +\
+                f"altitude: {self.altitude}\n" +\
+                f"num_sats: {self.num_sats}\n" +\
+                f"gps_qual: {self.gps_qual}\n" +\
+                f"geo_sep: {self.geo_sep}\n" +\
+                f"speed_over_ground: {self.speed_over_ground}\n" +\
+                f"mode_fix_type: {self.mode_fix_type}\n" +\
+                f"pdop: {self.pdop}\n" +\
+                f"vdop: {self.vdop}\n" +\
+                f"hdop: {self.hdop}\n"
     
     def to_dict(self) -> dict:
         return {

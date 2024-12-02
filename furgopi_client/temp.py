@@ -9,7 +9,7 @@ class Temp:
 		count = devices.device_count()
 		names = devices.device_names()
 
-		print('[press ctrl+c to end the script]')
+		
 		try: # Main program loop
 			while True:
 				i=0
