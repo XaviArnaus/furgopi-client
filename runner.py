@@ -40,7 +40,7 @@ def run():
                         id = point.name
                         data = _prepare_dict_for_json(point)
                         result[id] = data
-                else:     
+                else:
                     id = datapoint.name
                     data = _prepare_dict_for_json(datapoint)
                     result[id] = data
@@ -64,7 +64,7 @@ def _prepare_dict_for_json(datapoint: BaseEntity) -> dict:
     # Convert into a dict
     data = datapoint.to_dict()
     # Remove the name from the data
-    del data.name
+    del data["name"]
 
     return data
 

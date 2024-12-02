@@ -60,6 +60,7 @@ class GpsEntity(BaseEntity):
 
     def to_string(self):
         return f"timestamp: {self.timestamp}\n" +\
+                f"name: {self.name}\n" +\
                 f"latitude: {self.latitude} {self.lat_dir}\n" +\
                 f"longitude: {self.longitude} {self.lon_dir}\n" +\
                 f"altitude: {self.altitude}\n" +\
@@ -75,6 +76,7 @@ class GpsEntity(BaseEntity):
     def to_dict(self) -> dict:
         return {
             "timestamp": self.timestamp,
+            "name": self.name,
             "latitude": self.latitude,
             "longitude": self.longitude,
             "altitude": self.altitude,
