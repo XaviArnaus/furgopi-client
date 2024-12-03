@@ -39,6 +39,9 @@ runners = {
 def run():
     try:
         for sensor, params in runners.items():
+
+            print("\n" + TerminalColor.BLUE_BRIGHT + f"Processing runner {sensor}" + TerminalColor.END)
+
             read = params["runner"].run()
 
             if read is None:
@@ -50,8 +53,9 @@ def run():
             for datapoint in read:
                 filename = f"{datapoint.name}.csv"
                 _export_datapoint_to_csv(datapoint, params["fields"], filename)
+                print(TerminalColor.BLUE_BRIGHT + f"Wrote filename {filename}" + TerminalColor.END)
             
-            print("\n" + TerminalColor.GREEN_BRIGHT + "Done" + TerminalColor.END + "\n")
+        print("\n" + TerminalColor.GREEN_BRIGHT + "End" + TerminalColor.END + "\n")
 
     except RuntimeError as e:
         print(TerminalColor.RED_BRIGHT + str(e) + TerminalColor.END)
@@ -78,7 +82,7 @@ def _export_datapoint_to_csv(datapoint: BaseEntity, fields_map: dict, filename: 
     if not file_path.exists():
         fields_list = [f"\"{field}\"" for field in fields_map.values()]
         with open(file_path, "w") as file:
-            file.write(f"{CSV_SEPARATOR} ".join(fields_list) + "\n")
+            file.write(f"{CSV_SEPARATOR}".join(fields_list) + "\n")
     
     # Now write the current datapoint. Filter here only the wanted fields.
     line = []
@@ -86,6 +90,6 @@ def _export_datapoint_to_csv(datapoint: BaseEntity, fields_map: dict, filename: 
         if key in fields_map.keys():
             line.append(f"\"{value}\"")
     with open(file_path, "a") as file:
-        file.write(f"{CSV_SEPARATOR} ".join(line) + "\n")
+        file.write(f"{CSV_SEPARATOR}".join(line) + "\n")
 
 
