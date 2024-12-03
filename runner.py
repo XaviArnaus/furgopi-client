@@ -84,7 +84,7 @@ def _export_datapoint_to_csv(datapoint: BaseEntity, fields_map: dict, filename: 
     line = []
     for key, value in datapoint.to_dict().items():
         if key in fields_map.keys():
-            line.append(value)
+            line.append(f"\"{value}\"")
     with open(file_path, "a") as file:
         file.write(f"{CSV_SEPARATOR} ".join(line) + "\n")
 
