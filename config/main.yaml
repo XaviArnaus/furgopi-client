@@ -6,3 +6,5 @@
 datapoints:
   # [String] Where to store it
   file: "storage/datapoints.jsonl"
+  # [String] Where to store it
+  path: "storage/"

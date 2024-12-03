@@ -2,6 +2,7 @@ import time
 import sys
 import os
 import json
+from pathlib import Path
 
 from pyxavi.terminal_color import TerminalColor
 from pyxavi.debugger import full_stack, dd
@@ -13,11 +14,49 @@ from furgopi_client.gps_runner import GpsRunner
 
 LOOP_SLEEP = 1.0
 CONFIG_FILENAME = "main.yaml"
+CSV_SEPARATOR = ";"
 
 runners = {
-    "gps": GpsRunner(),
-    "temperature": TemperatureRunner()
+    "gps": {
+        "runner": GpsRunner(),
+        "fields": {
+            "timestamp": "timestamp",
+            "latitude": "latitude",
+            "longitude": "longitude",
+            "altitude": "altitude",
+            "speed_over_ground": "speed"
+        }
+    },
+    "temperature": {
+        "runner": TemperatureRunner(),
+        "fields": {
+            "timestamp": "timestamp",
+            "celsius_value": "temperature"
+        }
+    }
 }
+
+def run():
+    try:
+        for sensor, params in runners.items():
+            read = params["runner"].run()
+
+            if read is None:
+                print(f"No datapoint from the {sensor} sensor")
+                continue
+            elif isinstance(read, BaseEntity):
+                read = [read]
+            
+            for datapoint in read:
+                filename = f"{datapoint.name}.csv"
+                _export_datapoint_to_csv(datapoint, params["fields"], filename)
+            
+            print("\n" + TerminalColor.GREEN_BRIGHT + "Done" + TerminalColor.END + "\n")
+
+    except RuntimeError as e:
+        print(TerminalColor.RED_BRIGHT + str(e) + TerminalColor.END)
+    except Exception:
+        print(full_stack())
 
 def loop():
     try:
@@ -32,47 +71,21 @@ def loop():
         except SystemExit:
             os._exit(130)
 
-def run():
-    try:
-        result = {}
-        datapoints = _get_data()
-        for name, datapoint in datapoints.items():
-            if datapoint:
-                if isinstance(datapoint, list):
-                    for point in datapoint:
-                        id = point.name
-                        data = _prepare_dict_for_json(point)
-                        result[id] = data
-                else:
-                    id = datapoint.name
-                    data = _prepare_dict_for_json(datapoint)
-                    result[id] = data
-            else:
-                print(f"No datapoint from the {name} module")
+def _export_datapoint_to_csv(datapoint: BaseEntity, fields_map: dict, filename: str):
+    file_path = Path(Config(CONFIG_FILENAME).get("datapoints.path") + filename)
 
-        _store_data(result)
-        print(TerminalColor.GREEN_BRIGHT + "Done." + TerminalColor.END)
-    except RuntimeError as e:
-        print(TerminalColor.RED_BRIGHT + str(e) + TerminalColor.END)
-    except Exception:
-        print(full_stack())
+    # If the file does not exist, first of all write the header with the target fields
+    if not file_path.exists():
+        fields_list = [f"\"{field}\"" for field in fields_map.values()]
+        with open(file_path, "w") as file:
+            file.write(f"{CSV_SEPARATOR} ".join(fields_list) + "\n")
+    
+    # Now write the current datapoint. Filter here only the wanted fields.
+    line = []
+    for key, value in datapoint.to_dict().items():
+        if key in fields_map.keys():
+            line.append(value)
+    with open(file_path, "a") as file:
+        file.write(f"{CSV_SEPARATOR} ".join(line) + "\n")
 
-def _store_data(datapoints: dict):
-    with open(Config(CONFIG_FILENAME).get("datapoints.file"), "a") as file:
-        file.write(json.dumps(datapoints))
-
-def _get_data() -> dict:
-    output = {}
-    for name, runner in runners.items():
-        output[name] = runner.run()
-
-    return output
-
-def _prepare_dict_for_json(datapoint: BaseEntity) -> dict:
-    # Convert into a dict
-    data = datapoint.to_dict()
-    # Remove the name from the data
-    del data["name"]
-
-    return data
 
