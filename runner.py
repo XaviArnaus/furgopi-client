@@ -13,7 +13,7 @@ from furgopi_client.temperature_runner import TemperatureRunner
 from furgopi_client.gps_runner import GpsRunner
 
 LOOP_SLEEP = 1.0
-CONFIG_FILENAME = "main.yaml"
+CONFIG_FILENAME = "config/main.yaml"
 CSV_SEPARATOR = ";"
 
 runners = {
