@@ -1,11 +1,10 @@
 import time
 import sys
 import os
-import json
 from pathlib import Path
 
 from pyxavi.terminal_color import TerminalColor
-from pyxavi.debugger import full_stack, dd
+from pyxavi.debugger import full_stack
 from pyxavi.config import Config
 
 from furgopi_client.entities.base_entity import BaseEntity

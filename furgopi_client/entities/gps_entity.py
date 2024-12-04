@@ -43,8 +43,8 @@ class GpsEntity(BaseEntity):
         self.altitude = altitude
         self.num_sats = num_sats
         self.gps_qual = gps_qual
-        self.lat_dir = lat_dir
-        self.lon_dir = lon_dir
+        self.assign_sign_to_latitude_from_direction(lat_dir)
+        self.assign_sign_to_longitude_from_direction(lon_dir)
         self.geo_sep = geo_sep
         self.pdop = pdop
         self.hdop = hdop
@@ -57,12 +57,20 @@ class GpsEntity(BaseEntity):
     @property
     def name(self):
         return self.NAME
+    
+    def assign_sign_to_latitude_from_direction(self, lat_dir: str):
+        if (lat_dir.lower() == "s"):
+            self.latitude = self.latitude * -1
+    
+    def assign_sign_to_longitude_from_direction(self, lon_dir: str):
+        if (lon_dir.lower() == "w"):
+            self.longitude = self.longitude * -1
 
     def to_string(self):
         return f"timestamp: {self.timestamp}\n" +\
                 f"name: {self.name}\n" +\
-                f"latitude: {self.latitude} {self.lat_dir}\n" +\
-                f"longitude: {self.longitude} {self.lon_dir}\n" +\
+                f"latitude: {self.latitude}\n" +\
+                f"longitude: {self.longitude}\n" +\
                 f"altitude: {self.altitude}\n" +\
                 f"num_sats: {self.num_sats}\n" +\
                 f"gps_qual: {self.gps_qual}\n" +\
@@ -82,8 +90,6 @@ class GpsEntity(BaseEntity):
             "altitude": self.altitude,
             "num_sats": self.num_sats,
             "gps_qual": self.gps_qual,
-            "lat_dir": self.lat_dir,
-            "lon_dir": self.lon_dir,
             "geo_sep": self.geo_sep,
             "pdop": self.pdop,
             "hdop": self.hdop,
@@ -101,8 +107,10 @@ class GpsEntity(BaseEntity):
             altitude = dictionary["altitude"] if "altitude" in dictionary else None,
             num_sats = dictionary["num_sats"] if "num_sats" in dictionary else None,
             gps_qual = dictionary["gps_qual"] if "gps_qual" in dictionary else None,
-            lat_dir = dictionary["lat_dir"] if "lat_dir" in dictionary else None,
-            lon_dir = dictionary["lon_dir"] if "lon_dir" in dictionary else None,
+            lat_dir = dictionary["lat_dir"] if "lat_dir" in dictionary\
+                        else "s" if "latitude" in dictionary and dictionary["latitude"] < 0 else "n",
+            lon_dir = dictionary["lon_dir"] if "lon_dir" in dictionary\
+                        else "w" if "longitude" in dictionary and dictionary["longitude"] < 0 else "e",
             geo_sep = dictionary["geo_sep"] if "geo_sep" in dictionary else None,
             pdop = dictionary["pdop"] if "pdop" in dictionary else None,
             hdop = dictionary["hdop"] if "hdop" in dictionary else None,
