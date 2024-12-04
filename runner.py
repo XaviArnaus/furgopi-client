@@ -50,12 +50,12 @@ def run():
                 continue
             elif isinstance(read, BaseEntity):
                 read = [read]
-            
+
             for datapoint in read:
                 filename = f"{datapoint.name}.csv"
                 _export_datapoint_to_csv(datapoint, params["fields"], filename)
                 print(TerminalColor.BLUE_BRIGHT + f"Wrote filename {filename}" + TerminalColor.END)
-            
+
         print("\n" + TerminalColor.GREEN_BRIGHT + "End" + TerminalColor.END + "\n")
 
     except RuntimeError as e:
