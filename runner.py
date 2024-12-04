@@ -79,6 +79,11 @@ def loop():
 def _export_datapoint_to_csv(datapoint: BaseEntity, fields_map: dict, filename: str):
     file_path = Path(Config(CONFIG_FILENAME).get("datapoints.path") + filename)
 
+    # The weakness here is that the order of the field names may be different
+    #   to the order where the fields are placed inside the object, therefore
+    #   the datapoints are read with fields in different order and then exported
+    #   to the CSV nor matching the header.
+
     # If the file does not exist, first of all write the header with the target fields
     if not file_path.exists():
         fields_list = [f"\"{field}\"" for field in fields_map.values()]

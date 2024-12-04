@@ -32,10 +32,11 @@ class TempEntity(BaseEntity):
                 f"device_id: {self.device_id}\n"
 
     def to_dict(self) -> dict:
+        # The order exporting here needs to match to the order while creating the CSV
         return {
+            "name": self.name,
             "timestamp": self.timestamp,
             "celsius_value": self.celsius_value,
-            "name": self.name,
         }
 
     @staticmethod

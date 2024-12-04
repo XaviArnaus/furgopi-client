@@ -82,9 +82,10 @@ class GpsEntity(BaseEntity):
                 f"hdop: {self.hdop}\n"
     
     def to_dict(self) -> dict:
+        # The order exporting here needs to match to the order while creating the CSV
         return {
-            "timestamp": self.timestamp,
             "name": self.name,
+            "timestamp": self.timestamp,
             "latitude": self.latitude,
             "longitude": self.longitude,
             "altitude": self.altitude,
