@@ -19,6 +19,7 @@ runners = {
     "gps": {
         "runner": GpsRunner(),
         "fields": {
+            "name": "name",
             "timestamp": "timestamp",
             "latitude": "latitude",
             "longitude": "longitude",
@@ -29,6 +30,7 @@ runners = {
     "temperature": {
         "runner": TemperatureRunner(),
         "fields": {
+            "name": "name",
             "timestamp": "timestamp",
             "celsius_value": "temperature"
         }
