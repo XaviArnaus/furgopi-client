@@ -52,7 +52,7 @@ def run():
                 read = [read]
 
             for datapoint in read:
-                filename = f"{datapoint.name}.csv"
+                filename = f"{sensor}/{datapoint.name}.csv"
                 _export_datapoint_to_csv(datapoint, params["fields"], filename)
                 print(TerminalColor.BLUE_BRIGHT + f"Wrote filename {filename}" + TerminalColor.END)
 
