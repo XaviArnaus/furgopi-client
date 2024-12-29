@@ -101,7 +101,8 @@ def send():
                     print(TerminalColor.BLUE_BRIGHT + f"File sent" + TerminalColor.END)
                     _delete_sent_file(original_file=datapoint_file)
                     print(TerminalColor.BLUE_BRIGHT + f"Local file {datapoint_file} deleted" + TerminalColor.END )
-                    print("\n" + TerminalColor.GREEN_BRIGHT + "End" + TerminalColor.END + "\n")
+        
+        print("\n" + TerminalColor.GREEN_BRIGHT + "End" + TerminalColor.END + "\n")
 
 
     except Exception:
