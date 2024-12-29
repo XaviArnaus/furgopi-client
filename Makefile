@@ -17,3 +17,7 @@ run:
 .PHONY: loop
 loop:
 	@$(POETRY) run loop
+
+.PHONY: send
+send:
+	@$(POETRY) run send

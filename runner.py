@@ -1,7 +1,9 @@
 import time
 import sys
 import os
+import requests
 from pathlib import Path
+from datetime import datetime, timezone
 
 from pyxavi.terminal_color import TerminalColor
 from pyxavi.debugger import full_stack
@@ -75,6 +77,53 @@ def loop():
             sys.exit(130)
         except SystemExit:
             os._exit(130)
+
+def send():
+    try:
+        for datapoint_folder in _get_datapoints_storage_folders():
+            # Per convention, the datapoint folder is the sensor type, that is also the server endpoint route.
+            target_filename = f"{datapoint_folder['name']}-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}.csv"
+            target_url = Config(CONFIG_FILENAME).get("server.url") + "/" + datapoint_folder['name']
+        
+            for datapoint_file in _get_datapoint_files_in_folder(Path(datapoint_folder['path'])):
+                print("\n" + TerminalColor.BLUE_BRIGHT + f"Sending file {datapoint_file} to {target_url}" + TerminalColor.END)
+                response = _send_file_by_post(
+                    original_file=datapoint_file,
+                    target_url=target_url,
+                    target_filename=target_filename,
+                )
+                if response.status_code != 200:
+                    print(TerminalColor.RED_BRIGHT)
+                    print(f"Status Code: {response.status_code}")
+                    print(f"Reason: {response.content}")
+                    print(TerminalColor.END)
+                else:
+                    print(TerminalColor.BLUE_BRIGHT + f"File sent" + TerminalColor.END)
+                    _delete_sent_file(original_file=datapoint_file)
+                    print(TerminalColor.BLUE_BRIGHT + f"Local file {datapoint_file} deleted" + TerminalColor.END )
+                    print("\n" + TerminalColor.GREEN_BRIGHT + "End" + TerminalColor.END + "\n")
+
+
+    except Exception:
+        print(full_stack())
+
+def _get_datapoints_storage_folders() -> list:
+    root_path_to_datapoints = Path(Config(CONFIG_FILENAME).get("datapoints.path"))
+    return [ {"name": f.name, "path": f.path} for f in os.scandir(root_path_to_datapoints) if f.is_dir() ]
+
+def _get_datapoint_files_in_folder(folder: Path) -> list:
+    return folder.glob('*.csv')
+
+def _send_file_by_post(original_file: Path, target_url: str, target_filename: str) -> requests.Response:
+    # Don't define the headers to send a file. You'll need to set up the boundary.
+    #   Requests can do it by itself.
+    files = {
+        'file': (target_filename, open(original_file, "rb"), "text/csv"),
+    }
+    return requests.post(target_url, files=files)
+
+def _delete_sent_file(original_file: Path):
+    original_file.unlink(missing_ok=True)
 
 def _export_datapoint_to_csv(datapoint: BaseEntity, fields_map: dict, filename: str):
     file_path = Path(Config(CONFIG_FILENAME).get("datapoints.path") + filename)

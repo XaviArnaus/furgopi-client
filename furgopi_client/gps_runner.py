@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from pyxavi.terminal_color import TerminalColor
 
 from .entities.gps_entity import GpsEntity
 from .sensors.pa1010d import PA1010D
@@ -8,9 +9,14 @@ class GpsRunner:
     gps = None  
 
     def __init__(self) -> None:
-        self.gps = PA1010D()
+        try:
+            self.gps = PA1010D()
+        except FileNotFoundError:
+            print(TerminalColor.RED_BRIGHT + "No GPS sensor" + TerminalColor.END)
 
     def run(self) -> GpsEntity:
+        if self.gps is None:
+            return None
         result = self.gps.update()
         if result:
             data = self.gps.data

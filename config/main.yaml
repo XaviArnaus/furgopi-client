@@ -5,6 +5,9 @@
 # Storage for the datapoints to be sent away
 datapoints:
   # [String] Where to store it
-  file: "storage/datapoints.jsonl"
-  # [String] Where to store it
   path: "storage/"
+
+# Server to POST the data to
+server:
+  # [String] Full URL of the server
+  url: "https://furgopi.arnaus.net"
