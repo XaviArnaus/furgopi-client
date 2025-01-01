@@ -20,6 +20,8 @@ class GpsRunner:
         result = self.gps.update()
         if result:
             data = self.gps.data
+            if data['timestamp'] is None:
+                return None
             today = datetime.now(tz=timezone.utc)
             faking_datetime = f"{today.year}-{today.month}-{today.day} {data['timestamp']}"
             data = {
