@@ -17,7 +17,11 @@ class GpsRunner:
     def run(self) -> GpsEntity:
         if self.gps is None:
             return None
-        result = self.gps.update()
+        try:
+            result = self.gps.update()
+        except OSError:
+            return None
+
         if result:
             data = self.gps.data
             if data['timestamp'] is None:
